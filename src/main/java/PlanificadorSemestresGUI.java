@@ -13,6 +13,7 @@ public class PlanificadorSemestresGUI extends JFrame {
     private JTextArea areaMaterias;
     private JTextArea areaPlan;
     private JLabel labelSemestresMinimos;
+    private JTextField txtBuscar;  // campo para buscar por código
 
     public PlanificadorSemestresGUI() {
         graph = new MatterGraph();
@@ -40,6 +41,16 @@ public class PlanificadorSemestresGUI extends JFrame {
 
         labelSemestresMinimos = new JLabel("Semestres mínimos: -");
         panelTop.add(labelSemestresMinimos);
+
+        panelTop.add(Box.createHorizontalStrut(20));
+
+        panelTop.add(new JLabel("Buscar código:"));
+        txtBuscar = new JTextField(8);
+        panelTop.add(txtBuscar);
+
+        JButton btnBuscar = new JButton("Buscar");
+        btnBuscar.addActionListener(this::onBuscarMateria);
+        panelTop.add(btnBuscar);
 
         areaMaterias = new JTextArea();
         areaMaterias.setEditable(false);
@@ -116,13 +127,13 @@ public class PlanificadorSemestresGUI extends JFrame {
             JOptionPane.showMessageDialog(
                     this,
                     ex.getMessage(),
-                    "paila parceoooo ERROOOR",
+                    "Error en el modelo",
                     JOptionPane.ERROR_MESSAGE
             );
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(
                     this,
-                    "SIA CAIDO DX:\n" + ex.getMessage(),
+                    "Ocurrió un error al calcular el plan:\n" + ex.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
@@ -156,6 +167,58 @@ public class PlanificadorSemestresGUI extends JFrame {
 
         areaPlan.setText(sb.toString());
         areaPlan.setCaretPosition(0);
+    }
+
+    private void onBuscarMateria(ActionEvent e) {
+        String texto = txtBuscar.getText();
+        if (texto == null || texto.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Escribe un código de asignatura.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        int codigo;
+        try {
+            codigo = Integer.parseInt(texto.trim());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El código debe ser numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Matter m = graph.getMatter(codigo);
+        if (m == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró la asignatura con código " + codigo, "No encontrado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        StringBuilder info = new StringBuilder();
+        info.append("Código: ").append(codigo).append("\n");
+        info.append("Nombre: ").append(m.getName()).append("\n");
+        info.append("Prerrequisitos: ");
+
+        List<List<Integer>> prereqs = m.getPrerequisites();
+        if (prereqs == null || prereqs.isEmpty()) {
+            info.append("Ninguno");
+        } else {
+            boolean first = true;
+            for (List<Integer> grupo : prereqs) {
+                for (Integer preId : grupo) {
+                    if (!first) info.append(", ");
+                    info.append(preId);
+                    first = false;
+                }
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, info.toString(), "Detalle de asignatura", JOptionPane.INFORMATION_MESSAGE);
+
+        String todo = areaMaterias.getText();
+        String patron = "ID: " + codigo;
+        int idx = todo.indexOf(patron);
+        if (idx >= 0) {
+            areaMaterias.requestFocus();
+            areaMaterias.setCaretPosition(idx);
+            areaMaterias.select(idx, idx + patron.length());
+        }
     }
 
     public static void main(String[] args) {
