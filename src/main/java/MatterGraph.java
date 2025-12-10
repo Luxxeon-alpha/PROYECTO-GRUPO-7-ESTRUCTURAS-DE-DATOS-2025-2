@@ -25,7 +25,7 @@ public class MatterGraph {
         matters.put(1000019, new Matter(1000019, "Fundamentos de Mecánica",
                 Arrays.asList(Arrays.asList(1000004))));
         matters.put(2015174, new Matter(2015174, "Introducción a la Teoría de la Computación",
-                Arrays.asList(Arrays.asList(2015184), Arrays.asList(2025963))));
+                Arrays.asList( Arrays.asList(2025963))));
         matters.put(2015734, new Matter(2015734, "Programación de Computadores"));
         matters.put(2015970, new Matter(2015970, "Métodos Numéricos",
                 Arrays.asList(Arrays.asList(1000006))));
@@ -34,7 +34,7 @@ public class MatterGraph {
         matters.put(2016375, new Matter(2016375, "Programación Orientada a Objetos",
                 Arrays.asList(Arrays.asList(2015734))));
         matters.put(2016696, new Matter(2016696, "Algoritmos",
-                Arrays.asList(Arrays.asList(2016699), Arrays.asList(2015184), Arrays.asList(2025963))));
+                Arrays.asList(Arrays.asList(2016699), Arrays.asList(2025963))));
         matters.put(2016697, new Matter(2016697, "Arquitectura de Computadores",
                 Arrays.asList(Arrays.asList(2016698))));
         matters.put(2016698, new Matter(2016698, "Elementos de Computadores",
@@ -59,7 +59,7 @@ public class MatterGraph {
         matters.put(2025963, new Matter(2025963, "Matemáticas Discretas I",
                 Arrays.asList(Arrays.asList(1000003))));
         matters.put(2025964, new Matter(2025964, "Matemáticas Discretas II",
-                Arrays.asList(Arrays.asList(2025963), Arrays.asList(2015184))));
+                Arrays.asList(Arrays.asList(2025963))));
         matters.put(2025966, new Matter(2025966, "Lenguajes de Programación",
                 Arrays.asList(Arrays.asList(2016699), Arrays.asList(2015174))));
         matters.put(2025967, new Matter(2025967, "Redes de Computadores",
